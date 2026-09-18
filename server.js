@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 
 // 1. Route métier
 app.get('/api/data', (req, res) => {
-  res.json({ message: "Reponse metier valide", timestamp: new Date() });
+  res.json({ message: "Reponse metier v1.0.1 valide", timestamp: new Date() });
 });
 
 // 2. Tests de vie (Liveness & Readiness)
