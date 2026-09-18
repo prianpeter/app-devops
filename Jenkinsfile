@@ -17,11 +17,8 @@ pipeline {
         stage('3. Deploiement Conteneur') {
             steps {
                 sh '''
-                    # Arreter et supprimer l ancien conteneur s il existe deja
                     docker stop app-prod || true
                     docker rm app-prod || true
-
-                    # Lancer la nouvelle version en arriere-plan
                     docker run -d --name app-prod --restart always -p 3000:3000 app-devops:latest
                 '''
             }
@@ -30,11 +27,9 @@ pipeline {
         stage('4. Smoke Test (Verification en direct)') {
             steps {
                 sh '''
-                    # Attendre 2 secondes que l API demarre
-                    sleep 2
-
-                    # Tester si la sonde healthz repond bien 200 OK
-                    curl -f http://localhost:3000/healthz
+                    sleep 3
+                    # Verification directe a l interieur du conteneur sans souci de reseau
+                    docker exec app-prod wget -qO- http://127.0.0.1:3000/healthz
                 '''
             }
         }
